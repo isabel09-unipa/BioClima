@@ -42,7 +42,7 @@ public final class Clima implements Serializable {
     }
 
     public void mostrarClima() {
-        System.out.printf("🌦️ Estación: %s | Temp: %.1f°C | Humedad: %.0f%% | Viento: %.1f km/h | Lluvia: %s%n",
+        System.out.printf(" Estación: %s | Temp: %.1f°C | Humedad: %.0f%% | Viento: %.1f km/h | Lluvia: %s%n",
                 estacion, temperatura, humedad, viento, lluvia ? "Sí" : "No");
     }
 
@@ -55,3 +55,4 @@ public final class Clima implements Serializable {
         ajustarPorEstacion(); 
     }
 }
+
