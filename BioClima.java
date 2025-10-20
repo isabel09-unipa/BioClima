@@ -17,10 +17,10 @@ public class BioClima {
             boolean salir = false;
             
             do {
-                System.out.println("\n=== Bienvenido a BioClima ===");
+                System.out.println("\n=== Bienvenidos a BioClima ===");
                 System.out.println("1. Mostrar clima actual");
-                System.out.println("2. Cambiar estación del año");
-                System.out.println("3. Agregar ser vivo");
+                System.out.println("2. Cambiar estaciones del año");
+                System.out.println("3. Agregar seres vivos");
                 System.out.println("4. Simular un día");
                 System.out.println("5. Guardar ecosistema");
                 System.out.println("6. Salir");
@@ -40,7 +40,7 @@ public class BioClima {
                     case 1 -> eco.getClima().mostrarClima();
                     
                     case 2 -> {
-                        System.out.print("Ingrese estación (Primavera, Verano, Otoño, Invierno): ");
+                        System.out.print("Ingrese estación que quiere (Primavera, Verano, Otoño, Invierno): ");
                         String estacion = sc.nextLine().trim();
                         eco.getClima().setEstacion(estacion);
                         System.out.println("Estación actualizada a " + estacion);
@@ -114,3 +114,4 @@ public class BioClima {
         } // Carga desde archivo si existe
     }
 }
+
