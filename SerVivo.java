@@ -8,34 +8,43 @@ package com.mycompany.bioclima;
  *
  * @author Maria Isabel
  */
-import java.io.Serializable;
 
-public abstract class SerVivo implements Serializable {
-    protected String nombre;
-    protected double energia;
+public class SerVivo {
+    private final String nombre;
+    private double energia;
+    private final String tipo;     // "animal" o "planta"
+    private final String especie;  // herbívoro, carnívoro, flor, árbol...
 
-    // Constructor con un solo parámetro: asigna energía por defecto
-    public SerVivo(String nombre) {
-        this(nombre, 50); // energía inicial predeterminada
-    }
-
-    // Constructor con nombre y energía
-    public SerVivo(String nombre, double energia) {
+    public SerVivo(String nombre, double energia, String tipo, String especie) {
         this.nombre = nombre;
         this.energia = energia;
+        this.tipo = tipo.toLowerCase();
+        this.especie = especie;
     }
 
-    // Métodos getter
+    public void reaccionar(Clima clima) {
+        if (tipo.equals("animal")) {
+            if (clima.isLluvia()) energia -= 5;
+            else energia += 5;
+            energia -= clima.getTemperatura() / 40;
+            System.out.println(nombre + " (" + especie + " animal) energía: " + energia);
+        } 
+        else if (tipo.equals("planta")) {
+            if (clima.isLluvia()) energia += 8;
+            else energia -= 3;
+            energia -= clima.getTemperatura() / 60;
+            System.out.println(nombre + " (" + especie + " planta) energía: " + energia);
+        }
+        if (energia < 0) energia = 0;
+    }
 
-    /**
-     *
-     * @return
-     */
     public String getNombre() { return nombre; }
     public double getEnergia() { return energia; }
+    public String getTipo() { return tipo; }
+    public String getEspecie() { return especie; }
 
-    // Método abstracto para el comportamiento polimórfico
-    public abstract void reaccionar(Clima clima);
+    public void mostrarDatos() {
+        System.out.println(nombre + " (" + tipo + " - " + especie + ") Energía: " + energia);
+    }
 }
-
 
