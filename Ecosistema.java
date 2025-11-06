@@ -8,69 +8,74 @@ package com.mycompany.bioclima;
  *
  * @author Maria Isabel
  */
-import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Ecosistema implements Serializable {
+public class Ecosistema {
+    private final String nombre;
     private final Clima clima;
-    private final ArrayList<SerVivo> seres = new ArrayList<>();
+    private final TipoEcosistema tipo;
+    private final List<SerVivo> seresVivos;
+    private final List<Desastre> desastres;
 
-    public Ecosistema(Clima clima) { 
-        this.clima = clima; 
+    public Ecosistema(String nombre, Clima clima, TipoEcosistema tipo) {
+        this.nombre = nombre;
+        this.clima = clima;
+        this.tipo = tipo;
+        this.seresVivos = new ArrayList<>();
+        this.desastres = new ArrayList<>();
+    }
+
+    public static Ecosistema cargar() {
+        // Se podría leer de archivo. Por ahora creamos uno base.
+        Clima climaBase = new Clima(25.0, 70.0, "Verano");
+        TipoEcosistema tipoBase = new TipoEcosistema("Selva Tropical", 27, 3000, "Alta", 200);
+            return new Ecosistema("Amazonas", climaBase, tipoBase);
+    }
+
+    public void mostrarInformacion() {
+        System.out.println("Ecosistema: " + nombre);
+        tipo.mostrarInfoTipo();
+        clima.mostrarClima();
+        System.out.println("Seres vivos: " + seresVivos.size());
+        for (SerVivo s : seresVivos) {
+            System.out.println(" - " + s);
+        }
+    }
+
+    public Clima getClima() {
+        return clima;
     }
 
     public void agregar(SerVivo s) {
-        seres.add(s);
-        System.out.println("Se agregó " + s.getNombre());
+        seresVivos.add(s);
+    }
+
+    public boolean eliminar(String nombre) {
+        return seresVivos.removeIf(s -> s.getNombre().equalsIgnoreCase(nombre));
     }
 
     public void simularDia() {
-        System.out.println("\nInicia un nuevo día en el ecosistema...");
-        clima.simularCambioDiario();
-        clima.mostrarClima();
-
-        for (SerVivo s : seres) {
-            s.reaccionar(clima);
+        clima.cambiarClima();
+        for (SerVivo s : seresVivos) {
+            s.ajustarEnergia(clima);
         }
-
-        mostrarEstadoEcosistema();
+        // 10% de probabilidad de desastre
+        if (Math.random() < 0.1) {
+            Desastre d = Desastre.generarAleatorio();
+            desastres.add(d);
+            d.aplicarEfecto(this);
+        }
+        System.out.println("Día simulado con éxito.");
     }
 
-    public void mostrarEstadoEcosistema() {
-        System.out.println("\nEstado general del ecosistema:");
-        for (SerVivo s : seres) {
-            String estado;
-            if (s.getEnergia() > 80) {
-                estado = "Saludable";
-            } else if (s.getEnergia() > 40) {
-                estado = "Estable";
-            } else {
-                estado = "Débil";
-            }
-            System.out.printf(" - %s → Energía: %.1f → %s%n", s.getNombre(), s.getEnergia(), estado);
+    public void afectarPorDesastre(double intensidad) {
+        for (SerVivo s : seresVivos) {
+            s.reducirEnergia(intensidad * 5);
         }
     }
 
     public void guardar() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("ecosistema.dat"))) {
-            oos.writeObject(this);
-            System.out.println("Ecosistema guardado correctamente.");
-        } catch (IOException e) {
-            System.out.println("Error al guardar el ecosistema.");
-        }
-    }
-
-    public static Ecosistema cargar() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("ecosistema.dat"))) {
-            System.out.println("Ecosistema cargado desde archivo.");
-            return (Ecosistema) ois.readObject();
-        } catch (Exception e) {
-            System.out.println("No hay datos previos. Se crea un ecosistema nuevo.");
-            return new Ecosistema(new Clima("primavera"));
-        }
-    }
-
-    public Clima getClima() { 
-        return clima; 
+        GestorDatos.guardar(this);
     }
 }

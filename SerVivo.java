@@ -11,7 +11,7 @@ package com.mycompany.bioclima;
 
 public class SerVivo {
     private final String nombre;
-    private double energia;
+    double energia;
     private final String tipo;     // "animal" o "planta"
     private final String especie;  // herbívoro, carnívoro, flor, árbol...
 
@@ -46,5 +46,12 @@ public class SerVivo {
     public void mostrarDatos() {
         System.out.println(nombre + " (" + tipo + " - " + especie + ") Energía: " + energia);
     }
-}
 
+    void ajustarEnergia(Clima clima) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    void reducirEnergia(double d) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+}
