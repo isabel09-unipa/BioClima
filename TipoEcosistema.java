@@ -8,7 +8,10 @@ package com.mycompany.bioclima;
  *
  * @author Maria Isabel
  */
-public class TipoEcosistema {
+import java.io.Serializable;
+
+public class TipoEcosistema implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final String nombre;
     private final String biodiversidad;
     private final double altitudPromedio;
@@ -22,5 +25,17 @@ public class TipoEcosistema {
     public void mostrarInfoTipo() {
         System.out.println("Tipo de Ecosistema: " + nombre);
         System.out.println("Biodiversidad: " + biodiversidad + " | Altitud: " + altitudPromedio + " m");
+    }
+    
+    public String getNombre() {
+        return nombre;
+    }
+    
+    public String getBiodiversidad() {
+        return biodiversidad;
+    }
+    
+    public double getAltitudPromedio() {
+        return altitudPromedio;
     }
 }

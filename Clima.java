@@ -8,9 +8,11 @@ package com.mycompany.bioclima;
  *
  * @author Maria Isabel
  */
+import java.io.Serializable;
 import java.util.Random;
 
-public class Clima {
+public class Clima implements Serializable {
+    private static final long serialVersionUID = 1L;
     private double temperatura;
     private double humedad;
     private String estacion;
@@ -31,6 +33,12 @@ public class Clima {
         Random r = new Random();
         temperatura += r.nextDouble() * 4 - 2;
         humedad += r.nextDouble() * 10 - 5;
+        
+        // Asegurar que los valores estén en rangos razonables
+        if (temperatura < -10) temperatura = -10;
+        if (temperatura > 45) temperatura = 45;
+        if (humedad < 0) humedad = 0;
+        if (humedad > 100) humedad = 100;
     }
 
     public void setEstacion(String estacion) {
@@ -41,11 +49,21 @@ public class Clima {
         return estacion;
     }
 
-    boolean isLluvia() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean isLluvia() {
+        return this.humedad > 70.0;
     }
 
-    int getTemperatura() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public double getTemperatura() {
+        return this.temperatura;
+    }
+
+    public double getHumedad() {
+        return this.humedad;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Temperatura: %.1f°C\nHumedad: %.1f%%\nEstación: %s", 
+                           temperatura, humedad, estacion);
     }
 }

@@ -8,7 +8,10 @@ package com.mycompany.bioclima;
  *
  * @author Maria Isabel
  */
-public class Planta extends SerVivo {
+import java.io.Serializable;
+
+public class Planta extends SerVivo implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public Planta(String nombre, double energia, String tipoPlanta) {
         super(nombre, energia, "Planta", tipoPlanta);
@@ -16,7 +19,18 @@ public class Planta extends SerVivo {
 
     @Override
     public void ajustarEnergia(Clima clima) {
+        if (clima.isLluvia()) energia += 8;
+        else energia -= 3;
+        energia -= clima.getTemperatura() / 60;
+        
         if (clima.getEstacion().equalsIgnoreCase("Invierno")) energia -= 1;
-        else energia += 2; // gana energía con luz solar
+        else energia += 2;
+        
+        if (energia < 0) energia = 0;
+    }
+    
+    @Override
+    public String toString() {
+        return super.toString() + " [Tipo: Planta]";
     }
 }

@@ -8,10 +8,12 @@ package com.mycompany.bioclima;
  *
  * @author Maria Isabel
  */
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ecosistema {
+public class Ecosistema implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final String nombre;
     private final Clima clima;
     private final TipoEcosistema tipo;
@@ -27,10 +29,7 @@ public class Ecosistema {
     }
 
     public static Ecosistema cargar() {
-        // Se podría leer de archivo. Por ahora creamos uno base.
-        Clima climaBase = new Clima(25.0, 70.0, "Verano");
-        TipoEcosistema tipoBase = new TipoEcosistema("Selva Tropical", 27, 3000, "Alta", 200);
-            return new Ecosistema("Amazonas", climaBase, tipoBase);
+        return GestorDatos.cargar();
     }
 
     public void mostrarInformacion() {
@@ -39,9 +38,10 @@ public class Ecosistema {
         clima.mostrarClima();
         System.out.println("Seres vivos: " + seresVivos.size());
         for (SerVivo s : seresVivos) {
-            System.out.println(" - " + s);
+            s.mostrarDatos();
         }
     }
+
 
     public Clima getClima() {
         return clima;
@@ -77,5 +77,9 @@ public class Ecosistema {
 
     public void guardar() {
         GestorDatos.guardar(this);
+    }
+
+    public int getCantidadSeresVivos() {
+        return seresVivos.size();
     }
 }

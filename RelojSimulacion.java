@@ -8,7 +8,10 @@ package com.mycompany.bioclima;
  *
  * @author Maria Isabel
  */
-public class RelojSimulacion {
+import java.io.Serializable;
+
+public class RelojSimulacion implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int diaActual = 1;
     private String estacionActual = "Primavera";
 

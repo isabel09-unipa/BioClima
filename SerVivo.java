@@ -8,12 +8,14 @@ package com.mycompany.bioclima;
  *
  * @author Maria Isabel
  */
+import java.io.Serializable;
 
-public class SerVivo {
+public class SerVivo implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final String nombre;
-    double energia;
-    private final String tipo;     // "animal" o "planta"
-    private final String especie;  // herbívoro, carnívoro, flor, árbol...
+    protected double energia;
+    private final String tipo;
+    private final String especie;
 
     public SerVivo(String nombre, double energia, String tipo, String especie) {
         this.nombre = nombre;
@@ -47,11 +49,27 @@ public class SerVivo {
         System.out.println(nombre + " (" + tipo + " - " + especie + ") Energía: " + energia);
     }
 
-    void ajustarEnergia(Clima clima) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void ajustarEnergia(Clima clima) {
+        if (tipo.equals("animal")) {
+            if (clima.isLluvia()) energia -= 5;
+            else energia += 5;
+            energia -= clima.getTemperatura() / 40;
+        } 
+        else if (tipo.equals("planta")) {
+            if (clima.isLluvia()) energia += 8;
+            else energia -= 3;
+            energia -= clima.getTemperatura() / 60;
+        }
+        if (energia < 0) energia = 0;
     }
 
-    void reducirEnergia(double d) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void reducirEnergia(double cantidad) {
+        this.energia -= cantidad;
+        if (this.energia < 0) this.energia = 0;
+    }
+
+    @Override
+    public String toString() {
+        return nombre + " (" + tipo + " - " + especie + ") Energía: " + energia;
     }
 }
